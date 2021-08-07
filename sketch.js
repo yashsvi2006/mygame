@@ -1,6 +1,8 @@
 var bg
 var score1=0
 var score2=0
+var gameState=0;
+var player1name,player2name;
 function preload() {
     bgImage=loadImage("images/track1.jpg");
    girl1Image=loadImage("images/g1.png");
@@ -12,6 +14,7 @@ function preload() {
    toffee1Image=loadImage("images/toffee1.png")
    toffee2Image=loadImage("images/toffee2.png")
    toffee3Image=loadImage("images/toffee3.png")
+   introBGImage=loadImage("images/introBG.jpg")
 }
 
 function setup(){
@@ -42,10 +45,25 @@ function setup(){
   girl2.setCollider("rectangle",0,0,100,150);
 obstacleGroup=new Group();
 toffeeGroup=new Group();
+form1=new Form1();
+form2=new Form2();
 }
 
 function draw() {
     background("grey");
+    if(gameState===0){
+        console.log(gameState)
+        //form2.hide();
+      form1.display();
+      
+      }
+      if(gameState===1){
+        console.log(gameState)
+        form2.display();
+      }
+      
+      
+      if (gameState === 2){
   if(bg.x<80){
       bg.x=500;
   }
@@ -55,6 +73,12 @@ function draw() {
   girl1.velocityY=girl1.velocityY+0.8;
   if(keyDown("p")){
     girl2.velocityY=-10;
+}
+if(girl1.isTouching(toffeeGroup)){
+    score1=score1+1;
+}
+if(girl2.isTouching(toffeeGroup)){
+    score2=score2+1;
 }
 girl2.velocityY=girl2.velocityY+0.8;
 girl1.collide(invisibleground1);
@@ -66,16 +90,19 @@ girl2.collide(invisibleground2);
     if(girl1.isTouching(obstacleGroup)||girl2.isTouching(obstacleGroup)){
         obstacleGroup.setVelocityXEach(0);
         bg.velocityX=0;
-        fill("blue");
-        textSize(60)
+        textSize(60);
+        fill("white");
+        textFont("Comic Sans MS");
         text("Game Over!",500,310);
         
         
     }
-    textSize(30);
-    fill("white");
-    text("Score1:"+score1,100,100);
-    text("Score2:"+score2,900,100);
+textSize(20);
+fill("white");
+textFont("Comic Sans MS");
+text(player1name +"'s Score: "+ score1, 100,50);
+text(player2name +"'s Score: "+ score2, 900,50);
+}
 }
 
 function spawnObstacles(){
